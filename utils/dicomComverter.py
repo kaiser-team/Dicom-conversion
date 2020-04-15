@@ -3,6 +3,7 @@ import os
 import cv2
 
 def makedir():
+    # TODO(1): Convert this function to accept command line args as input
     parent_dir = os.getcwd()
     directory = "convertedPNG"
     print(parent_dir)
@@ -22,6 +23,9 @@ def makedir():
 
 
 def conversion(dicom_path, png_path):
+    # TODO(2): Accept file format as command line argument and set 
+    # TODO(3): Convert pixel array to float to cut down overflow and undeflow losses
+    # TODO(4): Rescale grey scale between 0-255 and convert to uint8
     PNG = True  # make it True if you want in PNG format
     total_conversion = 0
 
@@ -42,6 +46,8 @@ def conversion(dicom_path, png_path):
 
     print('%s image converted' % total_conversion)
 
+# TODO(6): Implement a main method to parse command line args and all methods.
+# TODO(7): Implement logging to inform users of progress.
 
 paths = makedir()
 conversion(paths[0], paths[1])

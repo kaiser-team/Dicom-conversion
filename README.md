@@ -25,6 +25,6 @@ Before running these scripts, be sure to install all required packages by runnin
 
     file_format: The format to be converted into. Ex: JPEG, PNG (case-sensitive)
 
-    Example usage: python3 dicomConverter.py /users/home/data /users/home/converted_data JPG
+    Example usage: python3 dicomConverter.py /users/home/data /users/home/converted_data JPEG
 ```
 
