@@ -28,7 +28,8 @@ def conversion(dicom_path, dest_path, file_format):
 
     # Checks if the source is a file or a folder. Add all relevant files to the image list.
     if dicom_path.endswith('.dcm'):
-        image_list.append(os.path.basename)
+        dicom_path, image = os.path.split(dicom_path)
+        image_list.append(image)
         logging.info('Identified source as a single DCM file with name %s', image_list[0])
     else:
         image_list = os.listdir(dicom_path)
@@ -61,7 +62,7 @@ def conversion(dicom_path, dest_path, file_format):
 def print_usage():
     print('Usage: \npython dicomConverter.py [src] [dest_folder] [file_format]\n\
         Flags: -q | --quiet: Convert images without logging info. Warnings are still logged\
-        Refer to README for more inforamtion.\')
+        Refer to README for more inforamtion.')
 
 
 
