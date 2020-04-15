@@ -62,7 +62,7 @@ def conversion(dicom_path, dest_path, file_format):
 def print_usage():
     print('Usage: \npython dicomConverter.py [src] [dest_folder] [file_format]\n\
         Flags: -q | --quiet: Convert images without logging info. Warnings are still logged\
-        Refer to README for more inforamtion.')
+        Refer to README for more information.')
 
 
 
