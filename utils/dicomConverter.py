@@ -8,12 +8,15 @@ import pydicom as dicom
 import logging
 
 def setup_dest(dest_path):
+    # Check if the destination exists and is a directory.
     if os.path.exists(dest_path) and os.path.isdir(dest_path):
         return
+    # Create a directory specified at the destination path. If this fails, the program will terminate.
     try:
         os.mkdir(dest_path)
     except OSError:
-        logging.warning('Could not access destination folder', exc_info=True)
+        logging.critical('Could not create or access destination folder', exc_info=True)
+        exit(1)
 
 def conversion(dicom_path, dest_path, file_format):
     formats = {
@@ -23,9 +26,10 @@ def conversion(dicom_path, dest_path, file_format):
     }
     image_list = []
 
+    # Checks if the source is a file or a folder.
     if dicom_path.endswith('.dcm'):
-        image_list.append(dicom_path)
-        logging.info('Identified source as a single DCM file')
+        image_list.append(os.path.basename)
+        logging.info('Identified source as a single DCM file with name %s', image_list[0])
     else:
         image_list = os.listdir(dicom_path)
         logging.info('Identified source folder with %d files', len(image_list))
