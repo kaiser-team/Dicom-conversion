@@ -54,8 +54,9 @@ def conversion(dicom_path, dest_path, file_format):
 
             logging.info('Successfully converted %s', image)
             total_conversion += 1
-        except:
+        except Exception as e:
             logging.warning('Could not convert %s', image)
+            logging.debug(exc_info=True)
     logging.info('Successfully converted %d files', total_conversion)
 
 
@@ -70,12 +71,21 @@ if __name__ == "__main__":
     if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
         print_usage()
         quit()
-    if '-q' in sys.argv or '--quiet' in sys.argv:
-        logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
+    # Set up options, if they are passed through command-line.
+    options = None
+    if len(sys.argv) > 4:
+        options = set(sys.argv[4:])
+    
+    if options:
+        if '-q' in options  or '--quiet' in options:
+            logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
+        if '-d' in options or '--debug' in options:
+            logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
     else:
         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+    
     try:
-        src, dest_folder, file_format = sys.argv[1:]
+        src, dest_folder, file_format = sys.argv[1:4]
         setup_dest(dest_folder)
         conversion(src, dest_folder, file_format.upper())
     except ValueError:
