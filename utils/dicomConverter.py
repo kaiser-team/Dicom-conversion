@@ -76,6 +76,6 @@ if __name__ == "__main__":
     try:
         src, dest_folder, file_format = sys.argv[1:]
         setup_dest(dest_folder)
-        conversion(src, dest_folder, file_format)
+        conversion(src, dest_folder, file_format.upper())
     except ValueError:
         print_usage()

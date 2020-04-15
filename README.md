@@ -26,7 +26,7 @@ Options:
 
     dest_folder: The path to a folder containing the converted files (will create one if no such folder exits)
 
-    file_format: The format to be converted into. Ex: JPEG, PNG (case-sensitive)
+    file_format: The format to be converted into. Ex: JPEG, PNG, BMP
 
     Example usage: python3 dicomConverter.py /users/home/data /users/home/converted_data JPEG
 
