@@ -13,6 +13,8 @@ General requirements include:
 ```
     python3.5+
     pip version 9.0.3 or higher
+    pydicom
+    opencv-python
 ```
 
 Before running these scripts, be sure to install all required packages by running:
