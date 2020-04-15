@@ -75,7 +75,7 @@ if __name__ == "__main__":
     else:
         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     try:
-        src, dest_folder, file_format = sys.argv[1:]
+        src, dest_folder, file_format = sys.argv[1:4]
         setup_dest(dest_folder)
         conversion(src, dest_folder, file_format.upper())
     except ValueError:
