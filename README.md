@@ -1,23 +1,31 @@
 ## About
 This repository contains utilities for DICOM image related operations for Team Kaiser.
 
-Current utilities:
+Contents:
 1. Convert DICOM(s) into a Raster file format (JPEG, PNG, BMP)
 2. DICOM Image Upload Utility.
 
 Make sure you have the read and write permissions to the folder(s) that contain the DICOM files.
 
-## Usage
+## Requirements
+
+General requirements include:
+```
+    python3.5+
+    pip version 9.0.3 or higher
+```
 
 Before running these scripts, be sure to install all required packages by running:
 ```
     pip3 install -r requirements.txt
 ```
 
+## Usage
+
 ### DICOM Image Converter
 
 ```
-    python3 dicomConverter.py [src] [dest_folder] [file_format]
+    python3 utils/dicomConverter.py [src] [dest_folder] [file_format]
 ```
 
 Options:
