@@ -34,4 +34,5 @@ Options:
 
     --help or -h: Print the usage of this script.
     --quiet or -q: Converts the images without logging info. Warnings are still logged.
+    --debug or -d: Run the program in debug mode. Will print stack traces for errors, if encountered.
 ```
