@@ -63,7 +63,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
         print_usage()
         quit()
-    if '-q' in sys.argv:
+    if '-q' in sys.argv or '--quiet' in sys.argv:
         logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
     else:
         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
