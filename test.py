@@ -1,6 +1,8 @@
 import sys
+import os
 import logging
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
-    
+    path = sys.argv[1]
+
+    print(os.listdir(path))
