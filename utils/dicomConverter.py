@@ -40,7 +40,7 @@ def conversion(dicom_path, dest_path, file_format):
         try:
             ds = dicom.dcmread(os.path.join(dicom_path, image))
 
-            pixel = ds.pixel_array
+            pixel = ds.pixel_array.astype(np.int16)
             intercept = ds.RescaleIntercept
             slope = ds.RescaleSlope
             hu_image = pixel * slope + intercept
