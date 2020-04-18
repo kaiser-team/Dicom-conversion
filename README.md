@@ -36,3 +36,18 @@ Options:
     --quiet or -q: Converts the images without logging info. Warnings are still logged.
     --debug or -d: Run the program in debug mode. Will print stack traces for errors, if encountered.
 ```
+
+### Json Datalist
+
+```
+    python3 jsonv1.py [src] [dest_folder] 
+```
+Options:
+```
+    src: The path to a .dcm file or a folder containing .dcm files
+
+    dest_folder: The path to a folder containing the converted files (will create one if no such folder exits)
+
+    Example usage: python3 jsonv1.py /users/home/data /users/home/converted_data 
+```
+
