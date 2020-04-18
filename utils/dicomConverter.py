@@ -39,24 +39,22 @@ def conversion(dicom_path, dest_path, file_format):
     for image in image_list:
         try:
             ds = dicom.dcmread(os.path.join(dicom_path, image))
-            shape = ds.pixel_array.shape
 
-            image_2d = ds.pixel_array.astype(float)
+            pixel = ds.pixel_array.astype(np.int16)
+            intercept = ds.RescaleIntercept
+            slope = ds.RescaleSlope
+            hu_image = pixel * slope + intercept
 
-            image_2d_scaled = (np.maximum(image_2d, 0) / image_2d.max()) * 255.0
-
-            image_2d_scaled = np.uint8(image_2d_scaled)
 
             # Replace filename with the corresponding extension
-            image = image.replace('.dcm', formats[file_format]) 
+            image = image.replace('.dcm', formats[file_format])
 
-            cv2.imwrite(os.path.join(dest_path, image), image_2d_scaled)
+            cv2.imwrite(os.path.join(dest_path, image), hu_image)
 
             logging.info('Successfully converted %s', image)
             total_conversion += 1
-        except Exception as e:
+        except:
             logging.warning('Could not convert %s', image)
-            logging.debug(exc_info=True)
     logging.info('Successfully converted %d files', total_conversion)
 
 
