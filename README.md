@@ -44,7 +44,7 @@ Options:
 ```
 Options:
 ```
-    src: The path to a .dcm file or a folder containing .dcm files
+    src: The path to a folder containing .png files
 
     dest_folder: The path to a folder containing the converted files (will create one if no such folder exits)
 
