@@ -23,8 +23,7 @@ def make_struct(dicom_path, dest_path, file_format):
         os.mkdir(root_path)
 
         # create datalist.json here.
-        #
-        #
+        jsonCreator.jasondata(dicom_path, root_path)
 
         png_path = root_path + "/png_files"
         os.mkdir(png_path)
