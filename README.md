@@ -34,7 +34,7 @@ Options:
 ```
     src: The path to a .dcm file or a folder containing .dcm files
 
-    dest_folder: The path to a folder containing the converted files (will create one if no such folder exits)
+    dest_folder: The path to where you want to create the dataset_root folder.
 
     file_format: The format to be converted into. Ex: JPEG, PNG, BMP
 
