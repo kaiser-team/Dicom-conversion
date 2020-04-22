@@ -1,2 +1,3 @@
 pydicom
 opencv-python
+dicom2nifti

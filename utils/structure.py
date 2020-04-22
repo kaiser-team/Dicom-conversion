@@ -3,6 +3,7 @@ import sys
 import logging
 import shutil
 import dicomConverter
+import dicom2nifti
 
 def check_dest(dest_path):
     # Check if the destination exists and is a directory.
@@ -28,8 +29,13 @@ def make_struct(dicom_path, dest_path, file_format):
         png_path = root_path + "/png_files"
         os.mkdir(png_path)
 
-        # convert dicom iamges to png here:
-        dicomConverter.conversion(dicom_path, png_path, file_format)
+        #Check if file format to be converted to is NIFTI
+        if file_format.upper() == 'NII':
+            dicom2nifti.convert_directory(dicom_path, png_path, compression = True, reorient = True)
+        else:
+            # convert dicom iamges to png here:
+            dicomConverter.conversion(dicom_path, png_path, file_format)
+        
 
     except OSError:
         logging.critical('Could not create or access destination folder', exc_info=True)
