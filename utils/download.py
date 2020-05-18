@@ -23,13 +23,18 @@ def get_info(server_name,studyIds):
     #this for loop gets each study and adds to a list of studies
     #'0020000D' just is the standard id for study uid
     #find other ids here https://dicom.innolitics.com/ciods/enhanced-sr/general-study/0020000d
+
     print("About to get single studies")
     listOfStudies =list()
     for index in range(len(studyIds)):
         singleStudy = client.search_for_studies(search_filters={'0020000D':studyIds[index]})
-        print(index,len(singleStudy))
-        print(singleStudy)
-        listOfStudies.append(singleStudy)
+        if(len(singleStudy)==0):
+            print("Could not find: ",studyIds[index])
+            continue
+        #to retrieve one study it takes about 4 minutes and 34 seconds
+        singleStudyRetrieve = client.retrieve_study(singleStudy[0]['0020000D']["Value"][0])
+        print(len(singleStudyRetrieve))
+        listOfStudies.append(singleStudyRetrieve)
     print(len(listOfStudies))
 
     # instances = client.retrieve_series(
@@ -72,7 +77,7 @@ def main(argv):
     #this checks that there are enough args
     #if not then it will use a default set of studyIds
     if(len(argv)<2):
-        print("This is not enough args")
+        print("This is not enough args, so using default study ids")
         #this is some test data
         studyIds =[
             '1.3.6.1.4.1.25403.345050719074.3824.20170126083429.2',
@@ -85,7 +90,7 @@ def main(argv):
     #Gets studyIds from the file passed in
     else:
         studyIds = getIdsFromFile(argv[1])
-        print(studyIds)
+        #print(studyIds)
 
     #This checks if there is a url passed in
     if(len(argv)>2):
