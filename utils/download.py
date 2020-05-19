@@ -13,7 +13,7 @@ def getIdsFromFile(fileStudyId):
     return studyIds
 
 
-def get_info(server_name,studyIds):
+def getStudies(server_name,studyIds):
     #sets up the connection to the dcm4chee and necessary prefixes
     client = DICOMwebClient(url=server_name,
             qido_url_prefix='rs',
@@ -36,37 +36,7 @@ def get_info(server_name,studyIds):
         print(len(singleStudyRetrieve))
         listOfStudies.append(singleStudyRetrieve)
     print(len(listOfStudies))
-
-    # instances = client.retrieve_series(
-    #     study_instance_uid=study_instance_uid,
-    #     series_instance_uid=series_instance_uid
-    # )
-
-    # instances = client.search_for_instances(
-    #     study_instance_uid=study_instance_uid,
-    #     series_instance_uid=series_instance_uid
-    # )
-    # sop_instance_uid = instances[0]['00080018']['Value'][0]
-
-    # instance = client.retrieve_instance(
-    #     study_instance_uid=study_instance_uid,
-    #     series_instance_uid=series_instance_uid,
-    #     sop_instance_uid = sop_instance_uid,
-    #    )
-    # print(instance)
-
-    # study_instance_uid = a[0]['0020000D']['Value'][0]
-    # series_instance_uid = a[0]['0020000E']['Value'][0]
-    # sop_class_uid = a[0]['00080016']['Value'][0]
-    # sop_instance_uid = a[0]['00080018']['Value'][0]
-
-
-    # frames = client.retrieve_instance_frames(
-    #     study_instance_uid=study_instance_uid,
-    #     series_instance_uid = series_instance_uid,
-    #     sop_instance_uid = sop_instance_uid,
-    #     frame_numbers = [1],
-    #     media_types = ('image/jpeg', ))
+    return listOfStudies
 
 #This function will be the driver behind the end to end data flow
 def main(argv):
@@ -100,8 +70,8 @@ def main(argv):
         #if not uses a default base url
         url = 'http://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE'
     
-    #this function will gather the info
-    get_info(url,studyIds)
+    #this function will retrieve the studies by id and return them in a list
+    studies=getStudies(url,studyIds)
 
 if __name__ == '__main__':
     #passes the agrs from the cli to the main function
