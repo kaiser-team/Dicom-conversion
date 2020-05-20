@@ -3,7 +3,7 @@ import sys
 import logging
 import shutil
 import dicomConverter
-import dicom2nifti
+import jsonCreator
 
 def check_dest(dest_path):
     # Check if the destination exists and is a directory.
@@ -12,11 +12,11 @@ def check_dest(dest_path):
     else:
         print("Invalid path: " + dest_path)
         exit(0)
-        
-        
+
 def make_dir(root_path):
     try:
         if os.path.exists(root_path) and os.path.isdir(root_path):
+            os.mkdir(root_path + "/dicoms")
             return root_path + "/dicoms"
         else:
             os.mkdir(root_path +"/dicoms")
@@ -40,16 +40,12 @@ def make_struct(dicom_path, dest_path, file_format):
         # create datalist.json here.
         jsonCreator.jasondata(dicom_path, root_path)
 
+
         png_path = root_path + "/png_files"
         os.mkdir(png_path)
 
-        #Check if file format to be converted to is NIFTI
-        if file_format.upper() == 'NII':
-            dicom2nifti.convert_directory(dicom_path, png_path, compression = True, reorient = True)
-        else:
-            # convert dicom iamges to png here:
-            dicomConverter.conversion(dicom_path, png_path, file_format)
-        
+        # convert dicom iamges to png here:
+        dicomConverter.conversion(dicom_path, png_path, file_format)
 
     except OSError:
         logging.critical('Could not create or access destination folder', exc_info=True)
