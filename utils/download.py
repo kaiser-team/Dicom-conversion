@@ -1,4 +1,7 @@
 from dicomweb_client.api import DICOMwebClient
+from structure import make_dir
+import pydicom
+import os
 
 class Meta:
     def __init__(self, url):
@@ -21,60 +24,91 @@ class Meta:
         print(all_series)
         return all_series
 
-    def get_sop_UID(self, study_uid, series):
-        sop = []
-        for serie in series:
-            instances = self.client.search_for_instances(
-                study_instance_uid=study_uid,
-                series_instance_uid=serie)
-            print(instances)
-            sop.append(instances[0]['00080018']['Value'][0])
-        return sop
-
-    def retrieve_instance(self, study_uid):
+    def get_sop_UID(self, study_uid, series, dest):
         instances = self.client.retrieve_study(study_uid)
-        print(type(instances[0]))
-
-    def retrieve(self, study_uid, series, sop):
-        instance = self.client.retrieve_instance(
-            study_instance_uid=study_uid,
-            series_instance_uid='1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286453',
-            sop_instance_uid='1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286470',
-            media_types=(('image/jp2', '1.2.840.10008.1.2.4.90',),))
-
-        print(instance)
-        with open("1.jpg", "wb") as fh:
-            fh.write(instance)
-
-        # for index, serie in enumerate(series):
-        #     instance = self.client.retrieve_instance(
+        for index, instance in enumerate(instances):
+            os.chdir(dest)
+            instance.save_as(str(index) + ".dcm")
+        # all_sop = []
+        # for serie in series:
+        #     sop1 = []
+        #     instances = self.client.search_for_instances(
         #         study_instance_uid=study_uid,
-        #         series_instance_uid=serie,
-        #         sop_instance_uid=sop[index],
-        #         media_types=(('image/jp2', '1.2.840.10008.1.2.4.90',),)
-        #     )
-        #     print(instance)
-        #     with open(str(index)+".jpg", "wb") as fh:
-        #         fh.write(instance)
+        #         series_instance_uid=serie)
+        #
+        #     print(instances[0])
+        #     for sop in instances:
+        #         sop1.append(sop['00080018']['Value'][0])
+        #     all_sop.append(sop1)
+        # print(len(all_sop[0]))
+        # return all_sop
+
+
+    # def retrieve(self, study_uid, series, sop, dest):
+    #     os.chdir(dest)
+    #     for index, serie in enumerate(series):
+    #         instance = self.client.retrieve_instance(
+    #             study_instance_uid=study_uid,
+    #             series_instance_uid=serie,
+    #             sop_instance_uid=sop[index]
+    #         )
+    #         #print(instance)
+    #
+    #         instance.save_as(str(index)+".dcm")
+    #
 
 
 if __name__ == '__main__':
-    with open('1.2.826.0.1.3680043.2.1125.1.75064541463040-2.2005072610384286470',
-              mode='rb') as file:
-        fileContent = file.read()
+    dest_folder = sys.argv[1:]
+    dicom_dir = make_dir(dest_folder[0])
 
-    print(fileContent)
+    #url = 'http://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE'
+    url = 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE'
+    meta = Meta(url)
+    meta.create_client()
+    #study_uid = '1.2.826.0.1.3680043.8.1055.1.20111102150758591.92402465.76095170'
+    study_uid = '1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286421'
+    series = meta.get_series_UID(study_uid)
+    sop = meta.get_sop_UID(study_uid, series, dicom_dir)
+    # meta.retrieve(study_uid, series, sop, dicom_dir)
 
-    with open("2.dcm", "wb") as fh:
-        fh.write(fileContent)
+
+
+
+
+    # with open('vhf.1.dcm', mode='rb') as file:
+    #     filedcm = file.read()
+    #
+    # print(filedcm, '\n')
+    # file.close()
+    # filename = get_testdata_file("vhf.1.dcm")
+
+
+    # with open('1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384382569',
+    #           mode='rb') as f:
+    #     fileContent = f.read()
+    #
+    #
+    #     iar = np.asarray(fileContent)
+    #     print(type(iar))
+    #     arr = iar
+    #     iar.tobytes()
+    #
+    #     with open("temp.dcm", "wb") as fh:
+    #         fh.write(iar)
+
+
+    # with open("2.jpeg", "wb") as fh:
+    #     fh.write(fileContent)
+
 
 
     # url = 'http://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE'
-    # #url = 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE'
+    # # url = 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE'
     # meta = Meta(url)
     # meta.create_client()
     # study_uid = '1.2.826.0.1.3680043.8.1055.1.20111102150758591.92402465.76095170'
-    # study_uid = '1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286421'
+    # # study_uid = '1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286421'
     # series = meta.get_series_UID(study_uid)
     # sop = meta.get_sop_UID(study_uid, series)
     # meta.retrieve(study_uid, series, sop)
