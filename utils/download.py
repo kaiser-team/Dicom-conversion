@@ -1,4 +1,6 @@
 from dicomweb_client.api import DICOMwebClient
+
+
 import json
 import sys
 
@@ -21,24 +23,67 @@ def getStudies(server_name,studyIds):
             stow_url_prefix='rs')
 
     #this for loop gets each study and adds to a list of studies
-    #'0020000D' just is the standard id for study uid
-    #find other ids here https://dicom.innolitics.com/ciods/enhanced-sr/general-study/0020000d
+    #'0020000D' is the standard code for study uid
 
     print("About to get single studies")
-    listOfStudies =list()
-    for index in range(len(studyIds)):
+    dictOfStudies= dict()
+    for index in range(1):#len(studyIds)):
+        #this verifies that the study exists
         singleStudy = client.search_for_studies(search_filters={'0020000D':studyIds[index]})
+
+        #if the study does not exist which skip the current studyId given
         if(len(singleStudy)==0):
             print("Could not find: ",studyIds[index])
             continue
-        #to retrieve one study it takes about 4 minutes and 34 seconds
-        singleStudyRetrieve = client.retrieve_study(singleStudy[0]['0020000D']["Value"][0])
-        print(len(singleStudyRetrieve))
-        listOfStudies.append(singleStudyRetrieve)
-    print(len(listOfStudies))
-    return listOfStudies
+        
+        #this puts the current study id inside of a variable for easy access
+        print("this is the study")
+        singleStudyId=singleStudy[0]['0020000D']["Value"][0]
+        print(singleStudyId)
 
-#This function will be the driver behind the end to end data flow
+        print("these are the series for this study")
+
+        #if the study does exist we search for each series associated with the study
+        seriesByStudy = client.search_for_series(singleStudyId)
+
+        #a dictionary will be used to associate a series' imagesg to its seriesId so the data is more organized
+        dictOFSeries=dict()
+
+        #get number of series ids for a study
+        sizeSeries=len(seriesByStudy)
+
+        #iterate through series id to get dicom instances
+        for singSer in range(2):#sizeSeries):
+            #place series id into a variable
+            singleSeriesId=seriesByStudy[singSer]['0020000E']['Value'][0]
+
+            #these two commennts are for testing
+            print("THIS IS THE SERIES ID")
+            print(singleSeriesId)
+
+            #for each series we gather its dicom instances
+            instancesPerSeries= client.search_for_instances(singleStudyId,singleSeriesId)
+
+            #we get the amount of instances
+            sizeInstances=len(instancesPerSeries)
+
+            #this print statment is for testing
+            print("these are the instances for this series")
+
+            #this is where the  
+            retrievedDicom = list()
+            for inst in range(sizeInstances):
+                instId=instancesPerSeries[inst]['00080018']['Value'][0]
+                print(instId)
+                retrievedInstance=client.retrieve_instance(singleStudyId,singleSeriesId,instId)
+                #print(retrievedInstance)
+                retrievedDicom.append(retrievedInstance)
+            dictOFSeries[singleSeriesId]=retrievedDicom
+        dictOfStudies[singleStudyId]=dictOFSeries
+
+    print(dictOfStudies)
+    return dictOfStudies
+
 def main(argv):
     #arg[0] will just be the name of the file
     #arg[1] will be the file containing the studyIds
