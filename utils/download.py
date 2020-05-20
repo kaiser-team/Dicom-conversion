@@ -25,7 +25,6 @@ def getStudies(server_name,studyIds):
     #this for loop gets each study and adds to a list of studies
     #'0020000D' is the standard code for study uid
 
-    print("About to get single studies")
     dictOfStudies= dict()
     for index in range(1):#len(studyIds)):
         #this verifies that the study exists
@@ -37,12 +36,8 @@ def getStudies(server_name,studyIds):
             continue
         
         #this puts the current study id inside of a variable for easy access
-        print("this is the study")
         singleStudyId=singleStudy[0]['0020000D']["Value"][0]
-        print(singleStudyId)
-
-        print("these are the series for this study")
-
+        
         #if the study does exist we search for each series associated with the study
         seriesByStudy = client.search_for_series(singleStudyId)
 
@@ -57,28 +52,22 @@ def getStudies(server_name,studyIds):
             #place series id into a variable
             singleSeriesId=seriesByStudy[singSer]['0020000E']['Value'][0]
 
-            #these two commennts are for testing
-            print("THIS IS THE SERIES ID")
-            print(singleSeriesId)
-
             #for each series we gather its dicom instances
             instancesPerSeries= client.search_for_instances(singleStudyId,singleSeriesId)
 
             #we get the amount of instances
             sizeInstances=len(instancesPerSeries)
 
-            #this print statment is for testing
-            print("these are the instances for this series")
-
             #this is where the  
             retrievedDicom = list()
             for inst in range(sizeInstances):
                 instId=instancesPerSeries[inst]['00080018']['Value'][0]
-                print(instId)
                 retrievedInstance=client.retrieve_instance(singleStudyId,singleSeriesId,instId)
-                #print(retrievedInstance)
                 retrievedDicom.append(retrievedInstance)
+            
+            #adds the list to the dict of series with key being the series id the instance came from
             dictOFSeries[singleSeriesId]=retrievedDicom
+        #adds the dict of series to the study id where the key is the studyId passed in
         dictOfStudies[singleStudyId]=dictOFSeries
 
     print(dictOfStudies)
