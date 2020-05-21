@@ -13,6 +13,19 @@ def check_dest(dest_path):
         print("Invalid path: " + dest_path)
         exit(0)
 
+def make_dir(root_path,studyId):
+    try:
+        if os.path.exists(root_path) and os.path.isdir(root_path):
+            os.mkdir(root_path + "/dicoms")
+            return root_path + "/dicoms"
+        else:
+            os.mkdir(root_path +"/dicoms")
+
+        return root_path + "/dicoms"
+
+    except OSError:
+        logging.critical('Path does not exist', exc_info=True)
+        exit(1)
 
 def make_struct(dicom_path, dest_path, file_format):
     root_path = dest_path + "/dataset_root"
