@@ -5,6 +5,7 @@ import shutil
 import dicomConverter
 import jsonCreator
 
+
 def check_dest(dest_path):
     # Check if the destination exists and is a directory.
     if os.path.exists(dest_path) and os.path.isdir(dest_path):
@@ -13,15 +14,18 @@ def check_dest(dest_path):
         print("Invalid path: " + dest_path)
         exit(0)
 
-def make_dir(root_path):
-    try:
-        if os.path.exists(root_path) and os.path.isdir(root_path):
-            os.mkdir(root_path + "/dicoms")
-            return root_path + "/dicoms"
-        else:
-            os.mkdir(root_path +"/dicoms")
 
-        return root_path + "/dicoms"
+def make_dir(root_path, folder_name):
+    try:
+        path = root_path + "/" + folder_name
+        if os.path.exists(root_path) and os.path.isdir(root_path):
+            os.system("rm -rf " + path)
+            os.mkdir(path)
+            return path
+        else:
+            os.mkdir(path)
+
+        return path
 
     except OSError:
         logging.critical('Path does not exist', exc_info=True)
@@ -38,7 +42,7 @@ def make_struct(dicom_path, dest_path, file_format):
         os.mkdir(root_path)
 
         # create datalist.json here.
-        jsonCreator.jasondata(dicom_path, root_path)
+        #jsonCreator.jasondata(dicom_path, root_path)
 
 
         png_path = root_path + "/png_files"
