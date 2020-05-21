@@ -25,7 +25,7 @@ if __name__ == '__main__':
     main_folder = structure.make_dir(dest_folder, 'dicoms')
     os.chdir(main_folder)
 
-    for id in id_list[1:]:   # Change back for all studies
+    for id in id_list:   # Change back for all studies
         dicom_dir = structure.make_dir(main_folder, id)
         dicom_src[id] = dicom_dir
         retrieve_study(client, id,  dicom_dir)
