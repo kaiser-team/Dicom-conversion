@@ -6,6 +6,7 @@ import pydicom as dicom
 
 import logging
 
+
 def setup_dest(dest_path):
     # Check if the destination exists and is a directory.
     if os.path.exists(dest_path) and os.path.isdir(dest_path):
@@ -16,6 +17,7 @@ def setup_dest(dest_path):
     except OSError:
         logging.critical('Could not create or access destination folder', exc_info=True)
         exit(1)
+
 
 def conversion(dicom_path, dest_path, file_format):
     formats = {
@@ -43,8 +45,6 @@ def conversion(dicom_path, dest_path, file_format):
             intercept = ds.RescaleIntercept
             slope = ds.RescaleSlope
             hu_image = pixel * slope + intercept
-            #print(np.amax(hu_image), np.amin(hu_image))
-
 
             # Replace filename with the corresponding extension
             image = image.replace('.dcm', formats[file_format])
@@ -65,17 +65,17 @@ def print_usage():
         Refer to README for more information.')
 
 
-if __name__ == "__main__":
-    if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
-        print_usage()
-        quit()
-    if '-q' in sys.argv or '--quiet' in sys.argv:
-        logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
-    else:
-        logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-    try:
-        src, dest_folder, file_format = sys.argv[1:]
-        setup_dest(dest_folder)
-        conversion(src, dest_folder, file_format.upper())
-    except ValueError:
-        print_usage()
+# if __name__ == "__main__":
+#     if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
+#         print_usage()
+#         quit()
+#     if '-q' in sys.argv or '--quiet' in sys.argv:
+#         logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
+#     else:
+#         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+#     try:
+#         src, dest_folder, file_format = sys.argv[1:]
+#         setup_dest(dest_folder)
+#         conversion(src, dest_folder, file_format.upper())
+#     except ValueError:
+#         print_usage()

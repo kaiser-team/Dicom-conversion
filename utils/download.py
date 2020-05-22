@@ -1,6 +1,7 @@
 from dicomweb_client.api import DICOMwebClient
 import os
 
+
 def create_client(url):
     webclient = DICOMwebClient(url=url,
                             qido_url_prefix='rs',
