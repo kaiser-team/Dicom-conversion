@@ -41,4 +41,4 @@ if __name__ == '__main__':
 
     os.chdir("..")
     os.chdir("..")
-    shutil.make_archive('dicoms', 'zip', os.getcwd() + r"\dicoms")
+    shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
