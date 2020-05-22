@@ -4,7 +4,6 @@ import structure
 import os
 import sys
 
-
 if __name__ == '__main__':
     dest_folder = sys.argv[1]
     id_file = sys.argv[2]        #txt file contains study id
@@ -25,7 +24,7 @@ if __name__ == '__main__':
     main_folder = structure.make_dir(dest_folder, 'dicoms')
     os.chdir(main_folder)
 
-    for id in id_list:   # Change back for all studies
+    for id in id_list[1:]:   # Change back for all studies
         dicom_dir = structure.make_dir(main_folder, id)
         dicom_src[id] = dicom_dir
         retrieve_study(client, id,  dicom_dir)
@@ -33,7 +32,3 @@ if __name__ == '__main__':
     # Prepare data structure for Clara
     clara_folder = structure.make_dir(dest_folder, 'Clara_Structure')
     os.chdir(clara_folder)
-
-    for id, src in dicom_src.items():
-        dest_folder = structure.make_dir(clara_folder, id)
-        make_struct(src, dest_folder, file_format)
