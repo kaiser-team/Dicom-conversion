@@ -34,12 +34,9 @@ def make_dir(root_path, folder_name):
         if os.path.exists(path):
             #if it does we delete the folder and make a new one
             shutil.rmtree(path)
-            os.mkdir(path)
-            return path
-        else:
-            #if the directory does not exist it will create it
-            os.mkdir(path)
-            return path
+        #if the directory does not exist it will create it
+        os.mkdir(path)
+        return path
 
     except OSError:
         logging.critical('Path does not exist', exc_info=True)

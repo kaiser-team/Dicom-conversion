@@ -21,6 +21,8 @@ if __name__ == '__main__':
     #will placed to store dicoms ordered by study ids
     print("We are making your destination folder!")
     main_folder = make_dir(dest_folder, 'dicoms')
+
+    #it switches to the dicoms folder
     os.chdir(main_folder)
 
     # Creates a folder for each study 
