@@ -8,7 +8,6 @@ if __name__ == '__main__':
     file_format = sys.argv[3]    # conversion format
 
     # Prepare data structure for Clara
-
     clara_path = make_dir(dest_path, 'Clara_Structure')
     os.chdir(clara_path)
 

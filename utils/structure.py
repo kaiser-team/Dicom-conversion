@@ -1,4 +1,4 @@
-import os
+import os,stat
 import sys
 import logging
 import shutil
@@ -14,18 +14,32 @@ def check_dest(dest_path):
         print("Invalid path: " + dest_path)
         exit(0)
 
-
+#this functions creates a folder system based on the path passed in by the user
 def make_dir(root_path, folder_name):
     try:
-        path = root_path + "/" + folder_name
-        if os.path.exists(root_path) and os.path.isdir(root_path):
-            os.system("rm -rf " + path)
+        #checks if the root_path is an absolute path
+        if not os.path.isabs(root_path):
+            #if not we use the current working directory as a base path
+            base_path=os.getcwd()
+            root_path = os.path.join(base_path,root_path)
+            #we then check to see if this root path created already exists
+            if not os.path.exists(root_path):
+                #if not we create
+                os.mkdir(root_path)
+        
+        #we combine the absolute path with the folder we want to add
+        path = os.path.join(root_path,folder_name)
+
+        #this checks if the new path created exists
+        if os.path.exists(path):
+            #if it does we delete the folder and make a new one
+            shutil.rmtree(path)
             os.mkdir(path)
             return path
         else:
+            #if the directory does not exist it will create it
             os.mkdir(path)
-
-        return path
+            return path
 
     except OSError:
         logging.critical('Path does not exist', exc_info=True)

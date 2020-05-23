@@ -8,21 +8,27 @@ if __name__ == '__main__':
     id_file = sys.argv[2]        # txt file contains study id
     dicom_src = dict({})         # location of each study
 
-    # url = 'http://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE'
-    url = 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE'
+    url = 'http://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE'
+    #url = 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE'
 
+    #this creates a connection to the dcm4chee url that is used
     client = create_client(url)
 
-    # study_uid = '1.2.826.0.1.3680043.8.1055.1.20111102150758591.92402465.76095170'
-    # study_uid1 = '1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286421'
-    # study_uid2 = '1.3.6.1.4.1.14519.5.2.1.6279.6001.298806137288633453246975630178'
-
+    #this gets the study ids from the file passed in
     id_list = getIdsFromFile(id_file)
 
+    #this function creates the base folder where subfolders 
+    #will placed to store dicoms ordered by study ids
+    print("We are making your destination folder!")
     main_folder = make_dir(dest_folder, 'dicoms')
     os.chdir(main_folder)
 
-    for id in id_list:   # Create folder for each study
+    # Creates a folder for each study 
+    # and inserts dicoms into each of those folders
+    for id in id_list:  
+        #this creates subfolder that the dicoms will be stored in
         dicom_dir = make_dir(main_folder, id)
+
+        #this will become the name of the subfolder
         dicom_src[id] = dicom_dir
         retrieve_study(client, id,  dicom_dir)
