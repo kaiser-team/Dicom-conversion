@@ -17,7 +17,7 @@ def retrieve_study(client, study_uid, dest):
     instances = client.retrieve_study(study_uid)
     for index, instance in enumerate(instances):
         os.chdir(dest)
-        print("Dicom #"+index," is being procesced")
+        print("Dicom #"+str(index)," is being procesced")
         instance.save_as(str(index) + ".dcm")
 
 #This function retrieves the study passed in by the user

@@ -16,31 +16,27 @@ def check_dest(dest_path):
 
 #this functions creates a folder system based on the path passed in by the user
 def make_dir(root_path, folder_name):
-    try:
-        #checks if the root_path is an absolute path
-        if not os.path.isabs(root_path):
-            #if not we use the current working directory as a base path
-            base_path=os.getcwd()
-            root_path = os.path.join(base_path,root_path)
-            #we then check to see if this root path created already exists
-            if not os.path.exists(root_path):
-                #if not we create
-                os.mkdir(root_path)
-        
-        #we combine the absolute path with the folder we want to add
-        path = os.path.join(root_path,folder_name)
+    
+    #checks if the root_path is an absolute path
+    if not os.path.isabs(root_path):
+        #if not we use the current working directory as a base path
+        base_path=os.getcwd()
+        root_path = os.path.join(base_path,root_path)
+        #we then check to see if this root path created already exists
+        if not os.path.exists(root_path):
+            #if not we create
+            os.mkdir(root_path)
+    
+    #we combine the absolute path with the folder we want to add
+    path = os.path.join(root_path,folder_name)
 
-        #this checks if the new path created exists
-        if os.path.exists(path):
-            #if it does we delete the folder and make a new one
-            shutil.rmtree(path)
-        #if the directory does not exist it will create it
-        os.mkdir(path)
-        return path
-
-    except OSError:
-        logging.critical('Path does not exist', exc_info=True)
-        exit(1)
+    #this checks if the new path created exists
+    if os.path.exists(path):
+        #if it does we delete the folder and make a new one
+        shutil.rmtree(path)
+    #if the directory does not exist it will create it
+    os.mkdir(path)
+    return path
 
 
 def make_struct(dicom_path, dest_path, file_format):
