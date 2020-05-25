@@ -31,4 +31,4 @@ if __name__ == '__main__':
 
     os.chdir("..")
     shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "..", 'dicoms'))
-    os.remove("dicom.zip")
+    os.remove("dicoms.zip")
