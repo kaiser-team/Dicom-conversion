@@ -30,4 +30,5 @@ if __name__ == '__main__':
         retrieve_study(client, id,  dicom_dir)
 
     os.chdir("..")
+    os.chdir("..")
     shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), 'dicoms'))
