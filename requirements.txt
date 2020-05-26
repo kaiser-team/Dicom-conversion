@@ -2,3 +2,4 @@ pydicom
 opencv-python
 dicom2nifti
 dicomweb-client
+progressbar
