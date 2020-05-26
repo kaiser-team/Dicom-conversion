@@ -63,7 +63,10 @@ if __name__ == '__main__':
             print("Could not retrieve Study Id: ",id)
             continue
 
-    if zip == 'zip':
-        os.chdir("..")
-        os.chdir("..")
-        shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+    try:
+        if zip == 'zip':
+            os.chdir("..")
+            os.chdir("..")
+            shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+    except:
+        print("Could not make archive.")
