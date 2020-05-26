@@ -2,12 +2,18 @@ from download import getIdsFromFile, retrieve_study, create_client
 from structure import make_dir
 import os
 import sys
+import shutil
 
 if __name__ == '__main__':
     try:
         dest_folder = sys.argv[1]    # destination folder
         id_file = sys.argv[2]        # txt file contains study id
         url = sys.argv[3]            #url to connect to dcm4chee
+        try:
+            zip = sys.argv[4]        # zip or not
+        except IndexError:
+            pass
+
     except IndexError:
         print("Please enter all command arguements!")
         sys.exit()
@@ -56,3 +62,11 @@ if __name__ == '__main__':
             print(E)
             print("Could not retrieve Study Id: ",id)
             continue
+
+    try:
+        if zip == 'zip':
+            os.chdir("..")
+            os.chdir("..")
+            shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+    except:
+        print("Could not make archive.")
