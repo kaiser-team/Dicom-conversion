@@ -1,11 +1,11 @@
 import os
 import sys
-
 import cv2
 import numpy as np
 import pydicom as dicom
 
 import logging
+
 
 def setup_dest(dest_path):
     # Check if the destination exists and is a directory.
@@ -17,6 +17,7 @@ def setup_dest(dest_path):
     except OSError:
         logging.critical('Could not create or access destination folder', exc_info=True)
         exit(1)
+
 
 def conversion(dicom_path, dest_path, file_format):
     formats = {
@@ -45,7 +46,6 @@ def conversion(dicom_path, dest_path, file_format):
             slope = ds.RescaleSlope
             hu_image = pixel * slope + intercept
 
-
             # Replace filename with the corresponding extension
             image = image.replace('.dcm', formats[file_format])
 
@@ -58,32 +58,23 @@ def conversion(dicom_path, dest_path, file_format):
     logging.info('Successfully converted %d files', total_conversion)
 
 
+
 def print_usage():
     print('Usage: \npython dicomConverter.py [src] [dest_folder] [file_format]\n\
         Flags: -q | --quiet: Convert images without logging info. Warnings are still logged\
         Refer to README for more information.')
 
 
-
 if __name__ == "__main__":
     if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
         print_usage()
         quit()
-    # Set up options, if they are passed through command-line.
-    options = None
-    if len(sys.argv) > 4:
-        options = set(sys.argv[4:])
-    
-    if options:
-        if '-q' in options  or '--quiet' in options:
-            logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
-        if '-d' in options or '--debug' in options:
-            logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
+    if '-q' in sys.argv or '--quiet' in sys.argv:
+        logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
     else:
         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-    
     try:
-        src, dest_folder, file_format = sys.argv[1:4]
+        src, dest_folder, file_format = sys.argv[1:]
         setup_dest(dest_folder)
         conversion(src, dest_folder, file_format.upper())
     except ValueError:

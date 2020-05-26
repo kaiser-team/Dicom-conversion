@@ -1,9 +1,10 @@
-import os
+import os,stat
 import sys
 import logging
 import shutil
 import dicomConverter
-import dicom2nifti
+import jsonCreator
+
 
 def check_dest(dest_path):
     # Check if the destination exists and is a directory.
@@ -12,6 +13,30 @@ def check_dest(dest_path):
     else:
         print("Invalid path: " + dest_path)
         exit(0)
+
+#this functions creates a folder system based on the path passed in by the user
+def make_dir(root_path, folder_name):
+    
+    #checks if the root_path is an absolute path
+    if not os.path.isabs(root_path):
+        #if not we use the current working directory as a base path
+        base_path=os.getcwd()
+        root_path = os.path.join(base_path,root_path)
+        #we then check to see if this root path created already exists
+        if not os.path.exists(root_path):
+            #if not we create
+            os.mkdir(root_path)
+    
+    #we combine the absolute path with the folder we want to add
+    path = os.path.join(root_path,folder_name)
+
+    #this checks if the new path created exists
+    if os.path.exists(path):
+        #if it does we delete the folder and make a new one
+        shutil.rmtree(path)
+    #if the directory does not exist it will create it
+    os.mkdir(path)
+    return path
 
 
 def make_struct(dicom_path, dest_path, file_format):
@@ -24,18 +49,14 @@ def make_struct(dicom_path, dest_path, file_format):
         os.mkdir(root_path)
 
         # create datalist.json here.
-        jsonCreator.jasondata(dicom_path, root_path)
+        #jsonCreator.jasondata(dicom_path, root_path)
+
 
         png_path = root_path + "/png_files"
         os.mkdir(png_path)
 
-        #Check if file format to be converted to is NIFTI
-        if file_format.upper() == 'NII':
-            dicom2nifti.convert_directory(dicom_path, png_path, compression = True, reorient = True)
-        else:
-            # convert dicom iamges to png here:
-            dicomConverter.conversion(dicom_path, png_path, file_format)
-        
+        # convert dicom iamges to png here:
+        dicomConverter.conversion(dicom_path, png_path, file_format)
 
     except OSError:
         logging.critical('Could not create or access destination folder', exc_info=True)
@@ -48,17 +69,17 @@ def print_usage():
         Refer to README for more information.')
 
 
-if __name__ == "__main__":
-    if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
-        print_usage()
-        quit()
-    if '-q' in sys.argv or '--quiet' in sys.argv:
-        logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
-    else:
-        logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-    try:
-        src, dest_folder, file_format = sys.argv[1:]
-        check_dest(dest_folder)
-        make_struct(src, dest_folder, file_format)
-    except ValueError:
-        print_usage()
+# if __name__ == "__main__":
+#     if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
+#         print_usage()
+#         quit()
+#     if '-q' in sys.argv or '--quiet' in sys.argv:
+#         logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
+#     else:
+#         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+#     try:
+#         src, dest_folder, file_format = sys.argv[1:]
+#         check_dest(dest_folder)
+#         make_struct(src, dest_folder, file_format)
+#     except ValueError:
+#         print_usage()
