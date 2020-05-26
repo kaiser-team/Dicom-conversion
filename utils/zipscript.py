@@ -1,33 +1,38 @@
-from zipfile import ZipFile
 import os
+import zipfile
+import shutil
+from os.path import basename
 
 
-
-def zip_text_files(path):
-
-    with ZipFile("texts.zip", 'w') as zipObj:
-
+# zip a folder containing dicom images starting from system root
+def zip_dcm_files(path, name):
+    with zipfile.ZipFile(name, 'w') as zipObj:
         for rootdir, dirs, files in os.walk(path):
             for file in files:
-                if file.endswith('.txt'):
-                    filePath = os.path.join(rootdir, file)
-                    zipObj.write(filePath)
+                if file.endswith('.dcm'):
+                    filepath = os.path.join(rootdir, file)
+                    zipObj.write(filepath)
 
 
-def text_files(path):
-    for filename in os.listdir(path):
-        if filename.endswith('.txt'):
-            yield filename
+# zip all contents of a directory
+def zip_dir(name, path):
+    shutil.make_archive(name, 'zip', path)
+
+
+# zip all contents of a directory to a chosen directory
+def zip_dir_at(name, src, dest):
+    try:
+        os.chdir(dest)
+        shutil.make_archive(name, 'zip', src)
+    except:
+        print("error while zipping")
+
+
+# zip within a directory within the directory
+# def zip_dir_in(name, path):
+#    os.chdir(path)
+#    shutil.make_archive(name, 'zip', os.path.join(os.getcwd(), "..", path))
+#    os.remove(name + ".zip")
 
 
 
-
-srcdir = r"C:\Users\alexw\Desktop\ziptest"
-destdir = r"C:\Users\alexw\Desktop\ziptest"
-zip_file_path = os.path.join(destdir, "texts.zip")
-
-os.chdir(srcdir)  # To work around zipfile limitations
-
-with ZipFile(zip_file_path, mode='w') as zf:
-    for txt_filename in text_files(srcdir):
-        zf.write(txt_filename)
