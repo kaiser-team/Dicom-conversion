@@ -18,10 +18,10 @@ def retrieve_study(client, study_uid, dest):
     instances = client.retrieve_study(study_uid)
     print('Writing study into destination folder...')
     pbar = ProgressBar(widgets=[Percentage(), Bar()])
-    for index, instance in pbar(enumerate(instances)):
+    for index in pbar(range(len(instances))):
+    #for index, instance in pbar(enumerate(instances)):
         os.chdir(dest)
-        print("Dicom #"+str(index)," is being procesced")
-        instance.save_as(str(index) + ".dcm")
+        instances[index].save_as(str(index) + ".dcm")
         pbar.update(index + 1)
     pbar.finish()
 

@@ -52,6 +52,7 @@ if __name__ == '__main__':
         dicom_src[id] = dicom_dir
         try:
             retrieve_study(client, id,  dicom_dir)
-        except:
+        except Exception as E:
+            print(E)
             print("Could not retrieve Study Id: ",id)
             continue
