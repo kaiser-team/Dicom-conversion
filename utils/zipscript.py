@@ -1,5 +1,6 @@
 from zipfile import ZipFile
 import os
+import shutil
 
 
 
@@ -19,15 +20,23 @@ def text_files(path):
         if filename.endswith('.txt'):
             yield filename
 
+def dicomZip(zip):
+    try:
+        if zip == 'zip':
+            os.chdir("..")
+            os.chdir("..")
+            shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+    except:
+        print("Could not make archive.")
 
 
 
-srcdir = r"C:\Users\alexw\Desktop\ziptest"
-destdir = r"C:\Users\alexw\Desktop\ziptest"
-zip_file_path = os.path.join(destdir, "texts.zip")
+# srcdir = r"C:\Users\alexw\Desktop\ziptest"
+# destdir = r"C:\Users\alexw\Desktop\ziptest"
+# zip_file_path = os.path.join(destdir, "texts.zip")
 
-os.chdir(srcdir)  # To work around zipfile limitations
+# os.chdir(srcdir)  # To work around zipfile limitations
 
-with ZipFile(zip_file_path, mode='w') as zf:
-    for txt_filename in text_files(srcdir):
-        zf.write(txt_filename)
+# with ZipFile(zip_file_path, mode='w') as zf:
+#     for txt_filename in text_files(srcdir):
+#         zf.write(txt_filename)
