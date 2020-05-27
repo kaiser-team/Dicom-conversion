@@ -29,7 +29,7 @@ Before running these scripts, be sure to install all required packages by runnin
 ### Download DICOM(s)
 
 ```
-    python3 utils/executeDicom.py [dest] [studyid_folder]
+    python3 utils/executeDicom.py [dest] [studyid_folder] [url] [zip]
 ```
 
 Options:
@@ -37,8 +37,15 @@ Options:
     dest: The path to where you want to create the dicoms folder.
 
     studyid_folder: The text file contains all study instance UID of the studies you want to downlaod.
+    
+    url: The address of server where you want to download dicoms from
+    
+    zip: if you want to zip the dicoms folder.
 
-    Example usage: python3 executeDicom.py /users/home/data studyid.txt
+    Example usage: python3 executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE
+    
+    Example usage with zipping: python3 executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-          
+                                arc/aets/DCM4CHEE zip
     
     Running executeDicom.py create a folder named dicoms at dest. Below is the folder structure of dicoms:
     
@@ -57,6 +64,7 @@ Options:
     │    │     ├── 2.dcm 
     │    │     ├── ...
     │    └── ...
+    ├── dicoms.zip        # The existence of this file depends on wether you choose to zip the dicoms folder or not
     └── ...
 
 ```

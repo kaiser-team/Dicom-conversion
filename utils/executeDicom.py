@@ -2,27 +2,71 @@ from download import getIdsFromFile, retrieve_study, create_client
 from structure import make_dir
 import os
 import sys
+import shutil
 
 if __name__ == '__main__':
-    dest_folder = sys.argv[1]    # destination folder
-    id_file = sys.argv[2]        # txt file contains study id
+    try:
+        dest_folder = sys.argv[1]    # destination folder
+        id_file = sys.argv[2]        # txt file contains study id
+        url = sys.argv[3]            #url to connect to dcm4chee
+        try:
+            zip = sys.argv[4]        # zip or not
+        except IndexError:
+            pass
+
+    except IndexError:
+        print("Please enter all command arguements!")
+        sys.exit()
+    
     dicom_src = dict({})         # location of each study
 
-    # url = 'http://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE'
-    url = 'http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE'
+    #this creates a connection to the dcm4chee url that is used
+    try:
+        client = create_client(url)
+    except ValueError:
+        print("Please enter a valid dcm4chee url!")
+        sys.exit()
 
-    client = create_client(url)
+    #this gets the study ids from the file passed in
+    try:
+        id_list = getIdsFromFile(id_file)
+    except FileNotFoundError:
+        print("Please Enter a file name or an absolute path to a destination!")
 
-    # study_uid = '1.2.826.0.1.3680043.8.1055.1.20111102150758591.92402465.76095170'
-    # study_uid1 = '1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610384286421'
-    # study_uid2 = '1.3.6.1.4.1.14519.5.2.1.6279.6001.298806137288633453246975630178'
+    #this function creates the base folder where subfolders 
+    #will placed to store dicoms ordered by study ids
+    try:
+        print("We are making your destination folder!")
+        main_folder = make_dir(dest_folder, 'dicoms')
+    except FileNotFoundError:
+        print("Please make sure the absolute path you entered is correct!")
+        sys.exit()
+    except OSError:
+        print("The destination file you provided has files in them, please clear them and try again")
+        sys.exit()
 
-    id_list = getIdsFromFile(id_file)
-
-    main_folder = make_dir(dest_folder, 'dicoms')
+    #it switches to the dicoms folder
     os.chdir(main_folder)
 
-    for id in id_list:   # Create folder for each study
+    # Creates a folder for each study 
+    # and inserts dicoms into each of those folders
+    for id in id_list:  
+        #this creates subfolder that the dicoms will be stored in
         dicom_dir = make_dir(main_folder, id)
+
+        #this will become the name of the subfolder
         dicom_src[id] = dicom_dir
-        retrieve_study(client, id,  dicom_dir)
+        try:
+            retrieve_study(client, id,  dicom_dir)
+        except Exception as E:
+            print(E)
+            print("Could not retrieve Study Id: ",id)
+            continue
+
+    try:
+        if zip == 'zip':
+            os.chdir("..")
+            os.chdir("..")
+            shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+    except:
+        print("Could not make archive.")

@@ -65,17 +65,17 @@ def print_usage():
         Refer to README for more information.')
 
 
-# if __name__ == "__main__":
-#     if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
-#         print_usage()
-#         quit()
-#     if '-q' in sys.argv or '--quiet' in sys.argv:
-#         logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
-#     else:
-#         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-#     try:
-#         src, dest_folder, file_format = sys.argv[1:]
-#         setup_dest(dest_folder)
-#         conversion(src, dest_folder, file_format.upper())
-#     except ValueError:
-#         print_usage()
+if __name__ == "__main__":
+    if len(sys.argv) == 1 or '--help' in sys.argv or '-h' in sys.argv:
+        print_usage()
+        quit()
+    if '-q' in sys.argv or '--quiet' in sys.argv:
+        logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
+    else:
+        logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+    try:
+        src, dest_folder, file_format = sys.argv[1:]
+        setup_dest(dest_folder)
+        conversion(src, dest_folder, file_format.upper())
+    except ValueError:
+        print_usage()
