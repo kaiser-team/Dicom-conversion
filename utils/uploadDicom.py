@@ -17,4 +17,5 @@ if __name__ == '__main__':
         command += server + ' ' + port + ' ' + src
         os.system(command)
     except IndexError:
-        pass
+        print("Please enter all command arguements!")
+        sys.exit()
