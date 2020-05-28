@@ -1,5 +1,6 @@
 import os
 import sys
+from unzipscript import unzip_dir
 
 
 if __name__ == '__main__':
@@ -8,7 +9,12 @@ if __name__ == '__main__':
         port = sys.argv[2]
         src = sys.argv[3]        # txt file contains study id
 
-        command = 'storescu +sd +sp *.dcm -aec DCM4CHEE '
+        if src.endswith('zip'):
+            src1 = src
+            src = os.path.join(os.getcwd(), 'dicoms')
+            unzip_dir(src1, src)
+
+        command = 'storescu +sd +r +sp *.dcm -aec DCM4CHEE '
 
         command += server + ' ' + port + ' ' + src
         os.system(command)
