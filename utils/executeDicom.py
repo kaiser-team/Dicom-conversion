@@ -83,7 +83,9 @@ if __name__ == '__main__':
             print('Archiving results...', end ='')
             os.chdir("..")
             os.chdir("..")
-            shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+            dicoms_folder = os.path.join(os.getcwd(), "dicoms")
+            shutil.make_archive('dicoms', 'zip', dicoms_folder)
+            shutil.rmtree(dicoms_folder)
             print('done.')
             print('Total archive size: {0:.2f} MB'.format(os.path.getsize(os.path.join(os.getcwd(), 'dicoms.zip'))/ (1024 * 1024)))
     except:
