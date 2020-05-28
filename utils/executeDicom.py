@@ -5,9 +5,13 @@ import sys
 import shutil
 
 def print_usage():
-    print('Usage: \npython executeDicom.py [dest] [studyid_file] [url] [zip]\n\
+    print('Usage: \npython executeDicom.py [dest] [studyid_file] [url] \n\
+        Flags: -z | --zip: To zip the resulting dcm files\
         Refer to README for more information.')
 if __name__ == '__main__':
+    if '--help' in sys.argv:
+        print_usage()
+        sys.exit()
     try:
         dest_folder = sys.argv[1]    # destination folder
         id_file = sys.argv[2]        # txt file contains study id
