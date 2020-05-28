@@ -143,3 +143,21 @@ Running executeStruct.py create a folder named Clara_Structure at dest. Below is
     │    └── ...
     └── ...
 ```
+
+### Upload Dicom Archive to DCM4CHEE
+
+```
+    python3 utils/uploadDicom.py [server] [port] [src]
+```
+
+Options:
+```
+    server: The host IP address of the dcm4chee server.
+
+    port: The port of the AE title 'DCM4CHEE'.
+
+    src: The path to the dicoms folder or dicoms zip file.
+```
+Example usage: 
+
+```python3 utils/uploadDicom.py localhost 11112 dicoms.zip```
