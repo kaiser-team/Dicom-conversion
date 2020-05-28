@@ -38,18 +38,20 @@ Make sure you have the read and write permissions to the folder(s) that contain 
 ### Download DICOM(s)
 
 ```
-    python3 utils/executeDicom.py [dest] [studyid_folder] [url]
+    python3 utils/executeDicom.py [dest] [studyid_file] [url]
 ```
 
 Options:
 ```
     dest: The path to where you want to create the dicoms folder.
 
-    studyid_folder: The text file contains all study instance UID of the studies you want to downlaod.
+    studyid_file: The text file contains all study instance UIDs of the studies you want to download.
     
-    url: The address of server where you want to download dicoms from
+    url: The address of server where you want to download dicoms from. 
+         This must include 'aets/DCM4CHEE'(see example usage below)
     
-    --zip or -z: if you want to zip the dicoms folder. This will clean up the downloaded files to eliminate duplicates.
+    --zip or -z: if you want to zip the dicoms folder. 
+                 This will clean up the downloaded files to eliminate duplicates.
 ```
 Example usage:
 
