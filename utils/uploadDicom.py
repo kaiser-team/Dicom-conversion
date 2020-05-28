@@ -3,11 +3,20 @@ import sys
 from unzipscript import unzip_dir
 
 
+def print_usage():
+    print('Usage: \npython uploadDicom.py [server] [port] [src] \n\
+        Refer to README for more information.')
+
+
 if __name__ == '__main__':
     try:
-        server = sys.argv[1]    # destination folder
+        if '--help' in sys.argv or len(sys.argv) < 4:
+            print_usage()
+            sys.exit()
+
+        server = sys.argv[1]
         port = sys.argv[2]
-        src = sys.argv[3]        # txt file contains study id
+        src = sys.argv[3]
 
         if src.endswith('zip'):
             src1 = src
