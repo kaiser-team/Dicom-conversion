@@ -18,6 +18,7 @@ General requirements include:
     opencv-python
     dicom2nifti
     dicomweb-client
+    progressbar
 ```
 
 Before running these scripts, be sure to install all required packages by running:
@@ -29,7 +30,7 @@ Before running these scripts, be sure to install all required packages by runnin
 ### Download DICOM(s)
 
 ```
-    python3 utils/executeDicom.py [dest] [studyid_folder] [url] [zip]
+    python3 utils/executeDicom.py [dest] [studyid_folder] [url]
 ```
 
 Options:
@@ -40,15 +41,17 @@ Options:
     
     url: The address of server where you want to download dicoms from
     
-    zip: if you want to zip the dicoms folder.
+    --zip or -z: if you want to zip the dicoms folder. This will clean up the downloaded files to eliminate duplicates.
+```
+Example usage:
 
-    Example usage: python3 executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE
+```python3 utils/executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE```
     
-    Example usage with zipping: python3 executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-          
-                                arc/aets/DCM4CHEE zip
+With zipping: 
+```python3 utils/executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE --zip```
     
-    Running executeDicom.py create a folder named dicoms at dest. Below is the folder structure of dicoms:
-    
+Running executeDicom.py create a folder named dicoms at dest. Below is the folder structure of dicoms:
+```
     .
     ├── ...
     ├── dicoms             # dicoms folder contains study folder
@@ -69,7 +72,7 @@ Options:
 
 ```
 
-### DICOM Image Converter
+### DICOM Image Converter for CLARA
 
 ```
     python3 utils/executeStruct.py [src] [dest] [file_format]
@@ -82,12 +85,14 @@ Options:
     dest_folder: The path to where you want to create the Clara_Structure folder.
 
     file_format: The format to be converted into. Ex: JPEG, PNG, BMP
+```
+Example usage: 
 
-    Example usage: python3 executeStruct.py /users/home/data /users/home/converted_data JPEG
+```python3 utils/executeStruct.py /users/home/data /users/home/converted_data JPEG```
     
     
-    Running executeStruct.py create a folder named Clara_Structure at dest. Below is the folder structure of Clara_Structure:
-    
+Running executeStruct.py create a folder named Clara_Structure at dest. Below is the folder structure of Clara_Structure:
+``` 
     .
     ├── ...
     ├── Clara_Structure                      # Clara_Structure folder contains study folder
@@ -108,7 +113,18 @@ Options:
     │    │     │              ├── ...
     │    └── ...
     └── ...
-
+```
+### DICOM Image Converter - Generic
 
 ```
+    python3 utils/dicomConverter.py [src] [dest] [file_format]
+```
 
+Options:
+```
+    src: The path to the dicoms folder, the structure should be same as the one above.
+
+    dest_folder: The path to where you want to create the Clara_Structure folder.
+
+    file_format: The format to be converted into. Ex: JPEG, PNG, BMP
+```
