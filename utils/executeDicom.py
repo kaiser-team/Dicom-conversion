@@ -85,6 +85,7 @@ if __name__ == '__main__':
             os.chdir("..")
             shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
             print('done.')
+            print('Total archive size: {0:.2f} MB'.format(os.path.getsize(os.path.join(os.getcwd(), 'dicoms.zip'))/ (1024 * 1024)))
     except:
         print("Could not make archive.")
         print_usage()
