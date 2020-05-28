@@ -59,6 +59,8 @@ Example usage:
     
 With zipping: 
 ```python3 utils/executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE --zip```
+
+The study_list contains ohifid.txt, that contains a few studies on dcm4chee server of dcmjs.
     
 Running executeDicom.py create a folder named dicoms at dest. Below is the folder structure of dicoms:
 ```
