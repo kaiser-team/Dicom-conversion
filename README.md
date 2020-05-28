@@ -29,24 +29,34 @@ Before running these scripts, be sure to install all required packages by runnin
 ### Download DICOM(s)
 
 ```
-    python3 utils/executeDicom.py [dest] [studyid_folder] [url] [zip]
+    python3 utils/executeDicom.py [dest] [studyid.txt] [url] [zip]
 ```
 
 Options:
 ```
     dest: The path to where you want to create the dicoms folder.
 
-    studyid_folder: The text file contains all study instance UID of the studies you want to downlaod.
+    studyid.txt: The text file contains all study instance UID of the studies you want to downlaod.
     
     url: The address of server where you want to download dicoms from
     
     zip: if you want to zip the dicoms folder.
+    
+```
+    
+    
+Example Usage:
+```
 
-    Example usage: python3 executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE
+    Example usage: python3 utils/executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE
     
-    Example usage with zipping: python3 executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-          
+    Example usage with zipping: python3 utils/executeDicom.py /users/home/data studyid.txt http://localhost:8080/dcm4chee-          
                                 arc/aets/DCM4CHEE zip
-    
+```
+
+
+Folder Structure:
+```
     Running executeDicom.py create a folder named dicoms at dest. Below is the folder structure of dicoms:
     
     .
@@ -79,13 +89,19 @@ Options:
 ```
     src: The path to the dicoms folder, the structure should be same as the one above.
 
-    dest_folder: The path to where you want to create the Clara_Structure folder.
+    dest: The path to where you want to create the Clara_Structure folder.
 
     file_format: The format to be converted into. Ex: JPEG, PNG, BMP
+    
+```
 
-    Example usage: python3 executeStruct.py /users/home/data /users/home/converted_data JPEG
-    
-    
+Example Usage:
+```
+    Example usage: python3 utils/executeStruct.py /users/home/data /users/home/converted_data JPEG
+```
+
+Folder Structure:
+```
     Running executeStruct.py create a folder named Clara_Structure at dest. Below is the folder structure of Clara_Structure:
     
     .

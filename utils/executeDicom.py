@@ -68,5 +68,6 @@ if __name__ == '__main__':
             os.chdir("..")
             os.chdir("..")
             shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+            shutil.rmtree(os.path.join(os.getcwd(), "dicoms"))
     except:
         print("Could not make archive.")
