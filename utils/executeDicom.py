@@ -42,7 +42,7 @@ if __name__ == '__main__':
     #this function creates the base folder where subfolders 
     #will placed to store dicoms ordered by study ids
     try:
-        print("We are making your destination folder!")
+        print('Creating destination folder at ' + dest_folder + '/dicoms')
         main_folder = make_dir(dest_folder, 'dicoms')
     except FileNotFoundError:
         print("Please make sure the absolute path you entered is correct!")
@@ -58,22 +58,27 @@ if __name__ == '__main__':
 
     # Creates a folder for each study 
     # and inserts dicoms into each of those folders
-    for id in id_list:  
-        #this creates subfolder that the dicoms will be stored in
-        dicom_dir = make_dir(main_folder, id)
+    for id in id_list: 
+        try: 
+            #this creates subfolder that the dicoms will be stored in
+            dicom_dir = make_dir(main_folder, id)
 
-        #this will become the name of the subfolder
-        dicom_src[id] = dicom_dir
-        try:
+            #this will become the name of the subfolder
+            dicom_src[id] = dicom_dir
+            print('Attempting to retrieve study - ', id)
+        
             retrieve_study(client, id,  dicom_dir)
+        except OSError:
+            print('Could not create target folders for studies')
+            sys.exit()
         except:
             print("Could not retrieve Study Id: ",id)
             continue
 
     try:
         if zip_option:
-            os.chdir("..")
-            os.chdir("..")
+            # Switch directories to folder that contains dicom-utils
+            os.chdir("../..")
             shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
     except:
         print("Could not make archive.")
