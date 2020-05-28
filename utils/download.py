@@ -1,6 +1,6 @@
 from dicomweb_client.api import DICOMwebClient
 import os
-from progressbar import ProgressBar, Percentage, Bar
+from progressbar import ProgressBar, Percentage, Bar, FileTransferSpeed
 
 #this creates the connection to dcm4chee
 #and passes default qido,wado,and stow urls
@@ -18,7 +18,7 @@ def retrieve_study(client, study_uid, dest):
     print("Retrieving your study, this may take a few minutes!")
     instances = client.retrieve_study(study_uid)
     print('Writing study into destination folder...')
-    pbar = ProgressBar(widgets=[Percentage(), Bar()])
+    pbar = ProgressBar(widgets=[Percentage(), Bar(), FileTransferSpeed()])
     for index in pbar(range(len(instances))):
         os.chdir(dest)
         instances[index].save_as(str(index) + ".dcm")
