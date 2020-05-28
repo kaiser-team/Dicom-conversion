@@ -1,12 +1,19 @@
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<div align="center">
+    <h1><strong>dicom-utils</strong></h1>
+    <p>A utilities library to download, archive and transfer DICOM images from PACS systems. Accompanies <a href='https://github.com/kaiser-team/dcm4che-docker'>dcm4che-docker</a>, a distributed dcm4chee service run on Docker Swarm</p>
+</div>
+<!-- prettier-ignore-end -->
+
 ## About
-This repository contains utilities for DICOM image related operations for Team Kaiser.
 
-Contents:
+This repository contains utilities for DICOM image related operations for Team Kaiser. These include:
+
 1. Download DICOM(s) from Clinical Data Manager system.
-2. Convert DICOM(s) into a Raster file format (JPEG, PNG, BMP)
-3. DICOM Image Upload Utility.
+2. Archive DICOM data from multiple studies for deserialized transfer over networks.
+3. Convert DICOM(s) into a Raster file format (JPEG, PNG, BMP)
 
-Make sure you have the read and write permissions to the folder(s) that contain the DICOM files.
 
 ## Requirements
 
@@ -25,6 +32,7 @@ Before running these scripts, be sure to install all required packages by runnin
 ```
     pip3 install -r requirements.txt
 ```
+Make sure you have the read and write permissions to the folder(s) that contain the DICOM files.
 
 ## Usage
 ### Download DICOM(s)
@@ -71,6 +79,23 @@ Running executeDicom.py create a folder named dicoms at dest. Below is the folde
     └── ...
 
 ```
+### DICOM Image Converter - Generic
+
+```
+    python3 utils/dicomConverter.py [src] [dest] [file_format]
+```
+
+Options:
+```
+    src: The path to the dicoms folder, the structure should be same as the one above.
+
+    dest_folder: The path to where you want to create the Clara_Structure folder.
+
+    file_format: The format to be converted into. Ex: JPEG, PNG, BMP
+    
+    Flags: -q or --quiet: Set the logger to only print warnings to STDOUT.
+```
+
 
 ### DICOM Image Converter for CLARA
 
@@ -113,18 +138,4 @@ Running executeStruct.py create a folder named Clara_Structure at dest. Below is
     │    │     │              ├── ...
     │    └── ...
     └── ...
-```
-### DICOM Image Converter - Generic
-
-```
-    python3 utils/dicomConverter.py [src] [dest] [file_format]
-```
-
-Options:
-```
-    src: The path to the dicoms folder, the structure should be same as the one above.
-
-    dest_folder: The path to where you want to create the Clara_Structure folder.
-
-    file_format: The format to be converted into. Ex: JPEG, PNG, BMP
 ```
