@@ -4,34 +4,36 @@ import os
 import sys
 import shutil
 
+def print_usage():
+    print('Usage: \npython executeDicom.py [dest] [studyid_file] [url] [zip]\n\
+        Refer to README for more information.')
 if __name__ == '__main__':
     try:
         dest_folder = sys.argv[1]    # destination folder
         id_file = sys.argv[2]        # txt file contains study id
         url = sys.argv[3]            #url to connect to dcm4chee
-        try:
-            zip = sys.argv[4]        # zip or not
-        except IndexError:
-            pass
+        if '-z' in sys.argv or '--zip' in sys.argv:
+            zip_option = True
 
-    except IndexError:
-        print("Please enter all command arguements!")
-        sys.exit()
-    
-    dicom_src = dict({})         # location of each study
-
-    #this creates a connection to the dcm4chee url that is used
-    try:
+        
+        dicom_src = dict()    # location of each study
+        #this creates a connection to the dcm4chee url that is used
         client = create_client(url)
+
+        #this gets the study ids from the file passed in
+        id_list = getIdsFromFile(id_file)
+    except IndexError:
+        print('Invalid number of options')
+        print_usage()
+        sys.exit()
     except ValueError:
         print("Please enter a valid dcm4chee url!")
-        sys.exit()
-
-    #this gets the study ids from the file passed in
-    try:
-        id_list = getIdsFromFile(id_file)
+        print_usage()
+        sys.exit()  
     except FileNotFoundError:
-        print("Please Enter a file name or an absolute path to a destination!")
+        print("Invalid study_id file")
+        print_usage()
+        sys.exit()
 
     #this function creates the base folder where subfolders 
     #will placed to store dicoms ordered by study ids
@@ -40,9 +42,11 @@ if __name__ == '__main__':
         main_folder = make_dir(dest_folder, 'dicoms')
     except FileNotFoundError:
         print("Please make sure the absolute path you entered is correct!")
+        print_usage()
         sys.exit()
     except OSError:
         print("The destination file you provided has files in them, please clear them and try again")
+        print_usage()
         sys.exit()
 
     #it switches to the dicoms folder
@@ -58,15 +62,16 @@ if __name__ == '__main__':
         dicom_src[id] = dicom_dir
         try:
             retrieve_study(client, id,  dicom_dir)
-        except Exception as E:
-            print(E)
+        except:
             print("Could not retrieve Study Id: ",id)
             continue
 
     try:
-        if zip == 'zip':
+        if zip_option:
             os.chdir("..")
             os.chdir("..")
             shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
     except:
         print("Could not make archive.")
+        print_usage()
+        sys.exit()
