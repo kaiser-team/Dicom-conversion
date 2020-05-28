@@ -109,7 +109,7 @@ Options:
 ```
     src: The path to the dicoms folder, the structure should be same as the one above.
 
-    dest_folder: The path to where you want to create the Clara_Structure folder.
+    dest: The path to where you want to create the Clara_Structure folder.
 
     file_format: The format to be converted into. Ex: JPEG, PNG, BMP
 ```
