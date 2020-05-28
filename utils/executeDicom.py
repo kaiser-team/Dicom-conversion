@@ -6,7 +6,7 @@ import shutil
 
 def print_usage():
     print('Usage: \npython executeDicom.py [dest] [studyid_file] [url] \n\
-        Flags: -z | --zip: To zip the resulting dcm files\
+        Flags: -z | --zip: To zip the resulting dcm files\n\
         Refer to README for more information.')
 if __name__ == '__main__':
     if '--help' in sys.argv:
@@ -16,6 +16,7 @@ if __name__ == '__main__':
         dest_folder = sys.argv[1]    # destination folder
         id_file = sys.argv[2]        # txt file contains study id
         url = sys.argv[3]            #url to connect to dcm4chee
+        zip_option = False
         if '-z' in sys.argv or '--zip' in sys.argv:
             zip_option = True
 
@@ -68,7 +69,8 @@ if __name__ == '__main__':
             print('Attempting to retrieve study - ', id)
         
             retrieve_study(client, id,  dicom_dir)
-        except OSError:
+        except OSError as e:
+            print(e)
             print('Could not create target folders for studies')
             sys.exit()
         except:
@@ -78,8 +80,11 @@ if __name__ == '__main__':
     try:
         if zip_option:
             # Switch directories to folder that contains dicom-utils
-            os.chdir("../..")
+            print('Archiving results...', end ='')
+            os.chdir("..")
+            os.chdir("..")
             shutil.make_archive('dicoms', 'zip', os.path.join(os.getcwd(), "dicoms"))
+            print('done.')
     except:
         print("Could not make archive.")
         print_usage()

@@ -2,3 +2,5 @@ env/
 .vscode
 data/
 .DS_Store
+dicoms
+dicoms.zip
