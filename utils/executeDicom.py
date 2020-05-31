@@ -97,8 +97,8 @@ if __name__ == '__main__':
             shutil.rmtree(dicoms_folder)
             print('done.')
             print('Total archive size: {0:.2f} MB'.format(os.path.getsize(os.path.join(os.getcwd(), 'dicoms.zip'))/ (1024 * 1024)))
-            end_time = time()
-            print('Total time taken: {0:.2f}s'.format(end_time - start_time))
+        end_time = time()
+        print('Total time taken: {0:.2f}s'.format(end_time - start_time))
     except Exception as e:
         print(e)
         print_usage()
