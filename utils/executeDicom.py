@@ -3,6 +3,7 @@ from structure import make_dir
 import os
 import sys
 import shutil
+from concurrent import futures
 
 def print_usage():
     print('Usage: \npython executeDicom.py [dest] [studyid_file] [url] \n\
@@ -59,6 +60,14 @@ if __name__ == '__main__':
 
     # Creates a folder for each study 
     # and inserts dicoms into each of those folders
+
+    ## Create a thread pool for study retrieval
+    ## We limit the max number of workers to 10, but employ less if there are lesser number of studyIds
+    study_executor = futures.ThreadPoolExecutor(len(id_list) if len(id_list) <= 10 else 10)
+
+    ## Append the retrieve study instances as future objects in a futures list
+    study_retrieve_futures = []
+    
     for id in id_list: 
         try: 
             #this creates subfolder that the dicoms will be stored in
@@ -66,17 +75,16 @@ if __name__ == '__main__':
 
             #this will become the name of the subfolder
             dicom_src[id] = dicom_dir
-            print('Attempting to retrieve study - ', id)
         
-            retrieve_study(client, id,  dicom_dir)
+            study_retrieve_futures.append(study_executor.submit(retrieve_study, client, id, dicom_dir))
         except OSError as e:
-            print(e)
             print('Could not create target folders for studies')
             sys.exit()
-        except:
+        except Exception as e:
             print("Could not retrieve Study Id: ",id)
             continue
-
+    ## If all studies are retrieved, we can then wait for the futures before zipping
+    futures.wait(study_retrieve_futures)
     try:
         if zip_option:
             # Switch directories to folder that contains dicom-utils
@@ -88,7 +96,7 @@ if __name__ == '__main__':
             shutil.rmtree(dicoms_folder)
             print('done.')
             print('Total archive size: {0:.2f} MB'.format(os.path.getsize(os.path.join(os.getcwd(), 'dicoms.zip'))/ (1024 * 1024)))
-    except:
-        print("Could not make archive.")
+    except Exception as e:
+        print(e)
         print_usage()
         sys.exit()

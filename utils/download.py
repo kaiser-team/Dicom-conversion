@@ -15,9 +15,9 @@ def create_client(url):
 def retrieve_study(client, study_uid, dest):
     '''retrieves the dicoms by study from dcm4chee and stores them in the destination 
     folder as a subfolder labeled by Study Id'''
-    print("Retrieving your study, this may take a few minutes!")
+    print("Retrieving study - ", study_uid)
     instances = client.retrieve_study(study_uid)
-    print('Writing study into destination folder...')
+    print('Writing study '+study_uid+' into destination folder...')
     pbar = ProgressBar(widgets=[Percentage(), Bar(), FileTransferSpeed()])
     for index in pbar(range(len(instances))):
         os.chdir(dest)
