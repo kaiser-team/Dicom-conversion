@@ -4,6 +4,7 @@ import os
 import sys
 import shutil
 from concurrent import futures
+from time import time
 
 def print_usage():
     print('Usage: \npython executeDicom.py [dest] [studyid_file] [url] \n\
@@ -67,7 +68,7 @@ if __name__ == '__main__':
 
     ## Append the retrieve study instances as future objects in a futures list
     study_retrieve_futures = []
-    
+    start_time = time()
     for id in id_list: 
         try: 
             #this creates subfolder that the dicoms will be stored in
@@ -96,6 +97,8 @@ if __name__ == '__main__':
             shutil.rmtree(dicoms_folder)
             print('done.')
             print('Total archive size: {0:.2f} MB'.format(os.path.getsize(os.path.join(os.getcwd(), 'dicoms.zip'))/ (1024 * 1024)))
+            end_time = time()
+            print('Total time taken: {0:.2f}s'.format(end_time - start_time))
     except Exception as e:
         print(e)
         print_usage()
